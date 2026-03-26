@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+
+<mat-dialog-content>
+  <form class="dialog-form" [formGroup]="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" autocomplete="off" />
+      @if (form.controls.name.invalid && form.controls.name.touched) {
+        <mat-error>Name is required (max 40 characters).</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Age</mat-label>
+      <input matInput formControlName="age" inputmode="numeric" autocomplete="off" />
+      @if (form.controls.age.invalid && form.controls.age.touched) {
+        <mat-error>Age must be a whole number.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput rows="4" formControlName="description"></textarea>
+      @if (form.controls.description.invalid && form.controls.description.touched) {
+        <mat-error>Description is required (max 240 characters).</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close type="button">Cancel</button>
+  <button mat-flat-button color="primary" type="button" (click)="save()">
+    {{ submitLabel }}
+  </button>
+</mat-dialog-actions>

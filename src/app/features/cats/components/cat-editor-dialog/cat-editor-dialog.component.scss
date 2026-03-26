@@ -1,0 +1,20 @@
+.dialog-form {
+  display: grid;
+  gap: 16px;
+  padding-top: 8px;
+  min-width: min(520px, 72vw);
+}
+
+mat-dialog-content {
+  padding-top: 4px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .dialog-form {
+    min-width: auto;
+  }
+}

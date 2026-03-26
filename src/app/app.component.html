@@ -1,0 +1,35 @@
+<div class="app-shell">
+  <header class="app-shell__header">
+    <mat-toolbar class="topbar">
+      <div class="brand">
+        <div class="brand__badge">
+          <mat-icon>pets</mat-icon>
+        </div>
+        <div class="brand__text-wrap">
+          <div class="brand__text">CatOps</div>
+          <p class="brand__subtitle">A crafted control room for feline operations</p>
+        </div>
+      </div>
+
+      <!-- FIX: (click) handler wired, icon + label toggle reactively via darkMode signal -->
+      <button
+        class="theme-toggle"
+        mat-flat-button
+        type="button"
+        (click)="toggleDark()"
+        [attr.aria-label]="darkMode() ? 'Switch to light mode' : 'Switch to dark mode'"
+      >
+        <mat-icon>{{ darkMode() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+        {{ darkMode() ? 'Light mode' : 'Dark mode' }}
+      </button>
+    </mat-toolbar>
+  </header>
+
+  <main class="shell" id="main-content">
+    <app-cat-dashboard-page />
+  </main>
+
+  <footer class="site-footer">
+    <p class="site-footer__copy">Copyrights &copy; 2008-2018 Sandeep Software Solutions. All rights reserved.</p>
+  </footer>
+</div>

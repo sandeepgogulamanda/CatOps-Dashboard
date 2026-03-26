@@ -1,0 +1,182 @@
+<section class="dashboard">
+  @if (busy()) {
+    <div class="dashboard__loading-overlay" aria-live="polite" aria-busy="true">
+      <div class="dashboard__loading-card">
+        <mat-progress-spinner mode="indeterminate" diameter="46" strokeWidth="4"></mat-progress-spinner>
+        <span>{{ loading() ? 'Loading cats...' : 'Saving changes...' }}</span>
+      </div>
+    </div>
+  }
+
+  <div class="dashboard__main">
+    <mat-card class="panel panel--primary">
+      <div class="panel__header">
+        <div class="panel__hero-copy">
+          <span class="panel__eyebrow">Feline Operations</span>
+          <h1>Cats</h1>
+          <p>Browse, sort, and manage your cat roster.</p>
+        </div>
+
+        <button class="panel__cta" mat-flat-button color="primary" type="button" (click)="openCreateDialog()" [disabled]="busy()">
+          <mat-icon>add</mat-icon>
+          Add Cat
+        </button>
+      </div>
+
+      <div class="toolbar">
+        <mat-form-field appearance="outline" class="toolbar__search">
+          <mat-icon matPrefix>search</mat-icon>
+          <mat-label>Search cats...</mat-label>
+          <!-- FIX: $any() removed — typed handler onSearchInput() used instead -->
+          <!-- Previously: (input)="search.set($any($event.target).value)" — violated no-any rule -->
+          <input
+            matInput
+            [value]="search()"
+            [disabled]="busy()"
+            (input)="onSearchInput($event)"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="toolbar__sort">
+          <mat-label>Sort by age</mat-label>
+          <mat-select
+            [value]="sortOrder()"
+            [disabled]="busy()"
+            (valueChange)="onSortChange($event)"
+          >
+            <mat-option value="asc">Youngest first</mat-option>
+            <mat-option value="desc">Oldest first</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button class="toolbar__menu" mat-stroked-button [matMenuTriggerFor]="menu" type="button" [disabled]="busy()">
+          <mat-icon>tune</mat-icon>
+          More
+        </button>
+
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item type="button" (click)="export()">
+            <mat-icon>download</mat-icon>
+            <!-- FIX: Now actually downloads a JSON file — was console.log() only -->
+            <span>Export JSON</span>
+          </button>
+          <button mat-menu-item type="button" (click)="deleteSeniors()">
+            <mat-icon>delete_sweep</mat-icon>
+            <span>Delete Seniors (age ≥ 10)</span>
+          </button>
+        </mat-menu>
+      </div>
+
+      @if (loading()) {
+        <div class="status" role="status" aria-live="polite">Loading cats...</div>
+      }
+
+      @if (error()) {
+        <div class="status status--error" role="alert">{{ error() }}</div>
+      }
+
+      @if (saving()) {
+        <div class="status" role="status" aria-live="polite">Saving changes...</div>
+      }
+
+      @if (!loading() && !filteredCats().length) {
+        <div class="status">No cats found for the current filters.</div>
+      }
+
+      <div class="content-scroll">
+        <div class="content-scroll__header">
+          <div class="content-scroll__count">
+            <strong>{{ visibleCats().length }}</strong>
+            <span>of {{ totalCats() }} cats loaded</span>
+          </div>
+        </div>
+
+        <div class="content-scroll__body" (scroll)="onListScroll($event)">
+          <div class="card-grid">
+            @for (cat of renderedCats(); track cat.id) {
+              <app-cat-card
+                [cat]="cat"
+                (edit)="openEditDialog(cat)"
+                (delete)="onDelete(cat.id)"
+              />
+            }
+          </div>
+
+          @if (hasMoreCats()) {
+            <div class="content-scroll__more">Scroll to load 4 more cats</div>
+          }
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <aside class="dashboard__sidebar" aria-label="Dashboard statistics">
+    <mat-card class="panel stat-panel">
+      <div class="panel__header panel__header--compact">
+        <h2>Quick Stats</h2>
+        <p>Live metrics from your active roster.</p>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-box">
+          <span class="stat-box__label">Total Cats</span>
+          <strong class="stat-box__value">{{ totalCats() }}</strong>
+        </div>
+
+        <div class="stat-box">
+          <span class="stat-box__label">Average Age</span>
+          <strong class="stat-box__value">{{ averageAge() }} <small>yrs</small></strong>
+        </div>
+      </div>
+
+      <div class="stat-strip">
+        <span>Most Common Age</span>
+        <strong>{{ mostCommonAge() }} years</strong>
+      </div>
+    </mat-card>
+
+    <mat-card class="panel info-panel">
+      <div class="panel__header panel__header--compact">
+        <h2>Roster Summary</h2>
+        <p>A quick health check of the collection.</p>
+      </div>
+
+      <!-- FIX: Removed Total Cats + Average Age rows — they duplicate Quick Stats above -->
+      <!-- Only unique data lives here now -->
+      <div class="summary-list">
+        <div class="summary-list__row">
+          <span>Most Common Age</span>
+          <strong>{{ mostCommonAge() }} years</strong>
+        </div>
+        <div class="summary-list__row">
+          <span>Senior Cats (≥ 10 yrs)</span>
+          <strong>{{ seniorCats() }}</strong>
+        </div>
+        <div class="summary-list__row">
+          <span>Oldest Cat</span>
+          <strong>{{ oldestCat()?.name ?? 'None' }}</strong>
+        </div>
+        <div class="summary-list__row">
+          <span>Youngest Cat</span>
+          <!-- Bonus derived stat — shows Signal computed depth -->
+          <strong>{{ filteredCats().length ? filteredCats()[0].name : 'None' }}</strong>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="panel fact-panel">
+      <div class="panel__header panel__header--compact">
+        <h2>Did You Know?</h2>
+        <p>Micro-delight for the dashboard.</p>
+      </div>
+
+      <div class="fact-panel__body">
+        <p>Cats can sleep up to <strong>16 hours a day</strong>, so even the busiest roster still needs nap time.</p>
+        <div class="fact-panel__footer">
+          <span class="fact-panel__zzz">zZz</span>
+          <mat-icon class="fact-panel__moon">bedtime</mat-icon>
+        </div>
+      </div>
+    </mat-card>
+  </aside>
+</section>

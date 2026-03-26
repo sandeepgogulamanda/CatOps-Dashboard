@@ -1,0 +1,297 @@
+@import '@angular/material/prebuilt-themes/azure-blue.css';
+
+:root {
+  color-scheme: light;
+}
+
+@keyframes dashboardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes panelFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background:
+    radial-gradient(circle at 14% 16%, rgba(120, 116, 255, 0.42), transparent 24%),
+    radial-gradient(circle at 86% 12%, rgba(179, 170, 255, 0.52), transparent 23%),
+    radial-gradient(circle at 82% 78%, rgba(255, 192, 145, 0.22), transparent 18%),
+    linear-gradient(180deg, #eef2ff 0%, #e7eafb 48%, #e4e8fb 100%);
+  color: #1a1c1e;
+  transition: background 500ms ease, color 320ms ease;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(255, 255, 255, 0.74), transparent 20%),
+    radial-gradient(circle at 78% 28%, rgba(255, 255, 255, 0.32), transparent 20%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.12), transparent 45%);
+  opacity: 0.88;
+  transition: opacity 320ms ease;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(circle at center, black 48%, transparent 92%);
+  opacity: 0.16;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+// Dark theme — toggled via AppComponent effect() adding .dark-theme to body
+body.dark-theme {
+  color-scheme: dark;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(90, 74, 214, 0.28), transparent 26%),
+    radial-gradient(circle at 86% 14%, rgba(74, 132, 255, 0.16), transparent 20%),
+    radial-gradient(circle at 80% 86%, rgba(255, 111, 145, 0.12), transparent 20%),
+    linear-gradient(180deg, #13162b 0%, #101323 44%, #0d101c 100%);
+  color: #e4e6f0;
+
+  &::before {
+    opacity: 0.18;
+    background:
+      radial-gradient(circle at 18% 20%, rgba(146, 130, 255, 0.12), transparent 18%),
+      radial-gradient(circle at 78% 28%, rgba(95, 145, 255, 0.08), transparent 18%),
+      linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent 45%);
+  }
+
+  &::after {
+    opacity: 0.08;
+  }
+}
+
+body.dark-theme app-cat-dashboard-page .panel,
+body.dark-theme app-cat-dashboard-page .panel--primary,
+body.dark-theme app-cat-dashboard-page .stat-panel,
+body.dark-theme app-cat-dashboard-page .info-panel,
+body.dark-theme app-cat-dashboard-page .fact-panel {
+  border-color: rgba(128, 138, 255, 0.14);
+  background:
+    linear-gradient(180deg, rgba(22, 26, 46, 0.94) 0%, rgba(14, 18, 33, 0.96) 100%);
+  box-shadow:
+    0 24px 44px rgba(0, 0, 0, 0.34),
+    0 8px 20px rgba(10, 14, 34, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+body.dark-theme app-cat-dashboard-page .panel__hero-copy h1,
+body.dark-theme app-cat-dashboard-page .panel__header h2,
+body.dark-theme app-cat-dashboard-page .content-scroll__count strong,
+body.dark-theme app-cat-dashboard-page .stat-box__value,
+body.dark-theme app-cat-dashboard-page .stat-strip strong,
+body.dark-theme app-cat-dashboard-page .summary-list__row strong {
+  color: #f5f7ff;
+}
+
+body.dark-theme app-cat-dashboard-page .panel__hero-copy p,
+body.dark-theme app-cat-dashboard-page .panel__header p,
+body.dark-theme app-cat-dashboard-page .panel__header--compact p,
+body.dark-theme app-cat-dashboard-page .content-scroll__count,
+body.dark-theme app-cat-dashboard-page .stat-box__label,
+body.dark-theme app-cat-dashboard-page .stat-strip,
+body.dark-theme app-cat-dashboard-page .summary-list__row,
+body.dark-theme app-cat-dashboard-page .fact-panel__body p {
+  color: #aab2dd;
+}
+
+body.dark-theme app-cat-dashboard-page .panel__eyebrow {
+  background: rgba(121, 112, 255, 0.16);
+  color: #b6b2ff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+body.dark-theme app-cat-dashboard-page .panel--primary::before {
+  background:
+    radial-gradient(circle at top left, rgba(110, 98, 255, 0.18), transparent 40%),
+    linear-gradient(180deg, rgba(96, 92, 191, 0.14) 0%, transparent 100%);
+}
+
+body.dark-theme app-cat-dashboard-page .content-scroll__header {
+  background: rgba(20, 24, 41, 0.88);
+  border-color: rgba(128, 138, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+body.dark-theme app-cat-dashboard-page .content-scroll__more {
+  color: #aab2dd;
+}
+
+body.dark-theme app-cat-dashboard-page .status {
+  background: rgba(24, 29, 49, 0.88);
+  color: #cdd3f3;
+}
+
+body.dark-theme app-cat-dashboard-page .status--error {
+  background: rgba(88, 26, 45, 0.72);
+  color: #ffbdd0;
+}
+
+body.dark-theme app-cat-dashboard-page .toolbar__menu {
+  background: linear-gradient(180deg, rgba(31, 36, 61, 0.92), rgba(20, 24, 41, 0.92)) !important;
+  color: #e5eaff !important;
+  border-color: rgba(128, 138, 255, 0.14) !important;
+}
+
+body.dark-theme app-cat-dashboard-page .toolbar .mat-mdc-form-field .mdc-notched-outline__leading,
+body.dark-theme app-cat-dashboard-page .toolbar .mat-mdc-form-field .mdc-notched-outline__notch,
+body.dark-theme app-cat-dashboard-page .toolbar .mat-mdc-form-field .mdc-notched-outline__trailing {
+  border-color: rgba(128, 138, 255, 0.18) !important;
+}
+
+body.dark-theme app-cat-dashboard-page .toolbar .mat-mdc-text-field-wrapper {
+  background: linear-gradient(180deg, rgba(22, 27, 46, 0.9), rgba(17, 21, 36, 0.94)) !important;
+}
+
+body.dark-theme app-cat-dashboard-page .toolbar .mdc-text-field__input,
+body.dark-theme app-cat-dashboard-page .toolbar .mat-mdc-select-value-text,
+body.dark-theme app-cat-dashboard-page .toolbar .mat-mdc-select-arrow,
+body.dark-theme app-cat-dashboard-page .toolbar .mat-icon {
+  color: #e8ecff !important;
+}
+
+body.dark-theme app-cat-dashboard-page .toolbar .mdc-floating-label,
+body.dark-theme app-cat-dashboard-page .toolbar .mat-mdc-form-field-hint,
+body.dark-theme app-cat-dashboard-page .toolbar .mat-mdc-form-field-icon-prefix {
+  color: #9ea6d2 !important;
+}
+
+body.dark-theme app-cat-dashboard-page .stat-grid,
+body.dark-theme app-cat-dashboard-page .stat-strip,
+body.dark-theme app-cat-dashboard-page .summary-list,
+body.dark-theme app-cat-dashboard-page .fact-panel__body {
+  border-color: rgba(128, 138, 255, 0.1);
+}
+
+body.dark-theme app-cat-dashboard-page .stat-grid {
+  background: rgba(18, 22, 39, 0.7);
+}
+
+body.dark-theme app-cat-dashboard-page .stat-box + .stat-box {
+  border-left-color: rgba(128, 138, 255, 0.08);
+}
+
+body.dark-theme app-cat-dashboard-page .stat-strip,
+body.dark-theme app-cat-dashboard-page .summary-list__row,
+body.dark-theme app-cat-dashboard-page .fact-panel__body {
+  background: rgba(18, 22, 39, 0.78);
+}
+
+body.dark-theme app-cat-dashboard-page .summary-list__row:nth-child(even) {
+  background: rgba(14, 18, 33, 0.96);
+}
+
+body.dark-theme app-cat-dashboard-page .summary-list__row:hover,
+body.dark-theme app-cat-dashboard-page .summary-list__row:nth-child(even):hover {
+  background: rgba(27, 32, 55, 0.98);
+}
+
+body.dark-theme app-cat-dashboard-page .dashboard__sidebar {
+  scrollbar-color: rgba(133, 142, 255, 0.36) transparent;
+}
+
+body.dark-theme app-cat-dashboard-page .dashboard__sidebar::-webkit-scrollbar-thumb,
+body.dark-theme app-cat-dashboard-page .content-scroll__body::-webkit-scrollbar-thumb {
+  background: rgba(133, 142, 255, 0.34);
+}
+
+app-cat-dashboard-page .dashboard {
+  animation: dashboardEnter 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+app-cat-dashboard-page .content-scroll__more {
+  padding: 12px 8px 4px;
+  text-align: center;
+  font-size: 0.78rem;
+  color: #7a82ab;
+}
+
+app-cat-dashboard-page .panel--primary::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 148px;
+  border-radius: 20px 20px 0 0;
+  background:
+    radial-gradient(circle at top left, rgba(133, 123, 255, 0.14), transparent 42%),
+    linear-gradient(180deg, rgba(118, 109, 217, 0.09) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+app-cat-dashboard-page .panel--primary::after {
+  content: '';
+  position: absolute;
+  inset: auto -12% -38% auto;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(123, 106, 255, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+app-cat-dashboard-page .panel__cta:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 18px 28px rgba(37, 105, 199, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+  filter: saturate(1.08);
+}
+
+app-cat-dashboard-page .toolbar__menu:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(99, 95, 180, 0.1) !important;
+}
+
+app-cat-dashboard-page .stat-panel:hover,
+app-cat-dashboard-page .info-panel:hover,
+app-cat-dashboard-page .fact-panel:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 24px 40px rgba(60, 65, 140, 0.12),
+    0 4px 12px rgba(60, 65, 140, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  border-color: rgba(118, 109, 217, 0.18);
+}
+
+app-cat-dashboard-page .fact-panel__moon {
+  animation: panelFloat 3.6s ease-in-out infinite;
+}

@@ -1,0 +1,266 @@
+:host {
+  --card-radius: 18px;
+  --card-pad: 16px;
+  --avatar-size: 42px;
+  --avatar-radius: 10px;
+  --actions-height: 38px;
+
+  display: block;
+}
+
+@keyframes cardReveal {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes avatarPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(126, 137, 255, 0.16);
+  }
+
+  50% {
+    box-shadow: 0 0 0 10px rgba(126, 137, 255, 0);
+  }
+}
+
+.cat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+  min-height: 0;
+  border-radius: var(--card-radius) !important;
+  padding: var(--card-pad) !important;
+  border: 1px solid rgba(118, 109, 217, 0.1) !important;
+  background:
+    radial-gradient(circle at top left, rgba(255, 244, 226, 0.92), transparent 36%),
+    linear-gradient(180deg, rgba(251, 241, 227, 0.98) 0%, rgba(244, 225, 196, 0.96) 100%) !important;
+  box-shadow:
+    0 18px 34px rgba(153, 112, 53, 0.1),
+    0 3px 10px rgba(100, 92, 180, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+  transition:
+    box-shadow 220ms ease,
+    border-color 220ms ease,
+    transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 260ms ease;
+  animation: cardReveal 560ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.cat-card:hover,
+.cat-card:focus-within {
+  border-color: rgba(176, 127, 59, 0.28) !important;
+  box-shadow:
+    0 22px 34px rgba(161, 118, 56, 0.18),
+    0 6px 14px rgba(100, 92, 180, 0.09),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75) !important;
+  transform: translateY(-5px) scale(1.01);
+}
+
+.cat-card:hover .cat-card__avatar,
+.cat-card:focus-within .cat-card__avatar {
+  transform: rotate(-5deg) scale(1.08);
+  animation: avatarPulse 1.6s ease-in-out infinite;
+}
+
+.cat-card:hover .cat-card__actions,
+.cat-card:focus-within .cat-card__actions {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+  transition-delay: 0ms;
+}
+
+.cat-card:hover .cat-card__name,
+.cat-card:focus-within .cat-card__name {
+  color: #1b2040;
+}
+
+.cat-card__top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.cat-card__avatar {
+  flex: 0 0 var(--avatar-size);
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  border-radius: var(--avatar-radius);
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, #f6dcc0, #ddb07d);
+  color: #7e5524;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 10px 20px rgba(157, 112, 48, 0.18);
+  transition:
+    transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 260ms ease;
+}
+
+.cat-card__avatar mat-icon {
+  width: 22px;
+  height: 22px;
+  font-size: 20px;
+}
+
+.cat-card__content {
+  min-width: 0;
+  flex: 1;
+}
+
+.cat-card__name {
+  margin: 0 0 5px;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #4d3314;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 180ms ease;
+}
+
+.cat-card__age {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #8a6340;
+  letter-spacing: 0.01em;
+}
+
+.cat-card__description {
+  margin: 8px 0 0;
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: #725536;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  padding-right: 2px;
+}
+
+.cat-card__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: var(--actions-height);
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid rgba(170, 125, 63, 0.14);
+  background: linear-gradient(180deg, rgba(250, 239, 221, 0), rgba(248, 229, 201, 0.96) 42%);
+  opacity: 0;
+  transform: translateY(6px);
+  visibility: hidden;
+  transition:
+    opacity 180ms ease,
+    transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    visibility 0ms linear 200ms;
+}
+
+.cat-card__actions ::ng-deep .mat-mdc-button-base {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  height: 32px !important;
+  min-width: 0 !important;
+  padding: 0 12px !important;
+  border-radius: 10px !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1 !important;
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    background 220ms ease !important;
+}
+
+.cat-card__actions ::ng-deep .mat-icon {
+  width: 14px !important;
+  height: 14px !important;
+  font-size: 14px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+}
+
+.cat-card__actions ::ng-deep .mdc-button__label {
+  display: inline-flex !important;
+  align-items: center !important;
+  line-height: 1 !important;
+}
+
+.cat-card__actions ::ng-deep .mat-mdc-button-base:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 16px rgba(97, 103, 182, 0.12) !important;
+}
+
+:host-context(body.dark-theme) .cat-card {
+  border-color: rgba(128, 138, 255, 0.14) !important;
+  background:
+    linear-gradient(180deg, rgba(23, 28, 48, 0.96) 0%, rgba(15, 19, 34, 0.98) 100%) !important;
+  box-shadow:
+    0 20px 36px rgba(0, 0, 0, 0.28),
+    0 6px 12px rgba(8, 12, 26, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+}
+
+:host-context(body.dark-theme) .cat-card:hover,
+:host-context(body.dark-theme) .cat-card:focus-within {
+  border-color: rgba(152, 160, 255, 0.24) !important;
+  box-shadow:
+    0 24px 42px rgba(0, 0, 0, 0.34),
+    0 10px 18px rgba(12, 16, 32, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+}
+
+:host-context(body.dark-theme) .cat-card__avatar {
+  background: linear-gradient(145deg, rgba(52, 60, 104, 0.96), rgba(85, 94, 164, 0.88));
+  color: #d7ddff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 10px 20px rgba(17, 22, 45, 0.28);
+}
+
+:host-context(body.dark-theme) .cat-card__name {
+  color: #f5f7ff;
+}
+
+:host-context(body.dark-theme) .cat-card__age,
+:host-context(body.dark-theme) .cat-card__description {
+  color: #aab2dd;
+}
+
+:host-context(body.dark-theme) .cat-card__actions {
+  border-top-color: rgba(128, 138, 255, 0.08);
+  background: linear-gradient(180deg, rgba(16, 20, 36, 0), rgba(16, 20, 36, 0.96) 42%);
+}
+
+@media (hover: none), (max-width: 768px) {
+  .cat-card__actions {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+  }
+}
+
+@media (max-width: 480px) {
+  :host {
+    --card-pad: 14px;
+    --avatar-size: 42px;
+  }
+}
